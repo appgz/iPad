@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AGZHomeViewController.h"
 
 @interface AGZViewController : UIViewController
+{
+    NSArray *myImages;
+    UIButton * button;
+}
+@property (nonatomic,retain)IBOutlet UIButton * button;
+@property (nonatomic,retain)IBOutlet UIImageView * AnimatedView;
+-(IBAction)toHomeView:(id)sender;
 
 @end

@@ -9,11 +9,16 @@
 #import <UIKit/UIKit.h>
 
 @class AGZViewController;
+@class LeavesViewController;
 
-@interface AGZAppDelegate : UIResponder <UIApplicationDelegate>
+@interface AGZAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate>{
 
-@property (strong, nonatomic) UIWindow *window;
+    UINavigationController * navigationController;
+  
+}
 
-@property (strong, nonatomic) AGZViewController *viewController;
+@property (strong, nonatomic)IBOutlet UIWindow *window;
+@property (strong, nonatomic)IBOutlet UINavigationController * navigationController;
+
 
 @end

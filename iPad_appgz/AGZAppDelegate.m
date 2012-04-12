@@ -9,26 +9,49 @@
 #import "AGZAppDelegate.h"
 
 #import "AGZViewController.h"
-
+//#import "AGZFirstViewController.h"
 @implementation AGZAppDelegate
 
 @synthesize window = _window;
-@synthesize viewController = _viewController;
-
+//@synthesize viewController = _viewController;
+@synthesize  navigationController;
 - (void)dealloc
 {
     [_window release];
-    [_viewController release];
+    [navigationController release];
+  //  [_viewController release];
     [super dealloc];
 }
 
+//隐藏root的navigation；
+//-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+//    if (viewController ==navigationController.view) {
+//        [navigationController setNavigationBarHidden:YES animated:animated];
+//    }
+//}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    self.viewController = [[[AGZViewController alloc] initWithNibName:@"AGZViewController" bundle:nil] autorelease];
-    self.window.rootViewController = self.viewController;
+    
+    [_window addSubview:navigationController.view];
+  
     [self.window makeKeyAndVisible];
+    
+    
+    
+    
+    
+//    UIViewController *rootViewController = [[[AGZFirstViewController alloc]init]autorelease];
+//    viewController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+//    [_window addSubview:viewController.view];
+//    [_window makeKeyAndVisible];
+    
+    
+    
+//    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+//    // Override point for customization after application launch.
+//    self.viewController = [[[AGZViewController alloc] initWithNibName:@"AGZViewController" bundle:nil] autorelease];
+//    self.window.rootViewController = self.viewController;
+//    [self.window makeKeyAndVisible];
     return YES;
 }
 
