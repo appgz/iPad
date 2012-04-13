@@ -35,6 +35,7 @@
 }
 
 -(IBAction)toMesView:(id)sender{
+    NSLog(@"%@",__FUNCTION__);
      AGZMesViewController * toMesView = [[AGZMesViewController alloc]init];
     [self.navigationController pushViewController:toMesView animated:YES];
     [toMesView release];
