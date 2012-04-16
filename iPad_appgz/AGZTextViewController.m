@@ -44,6 +44,7 @@
 -(void)getImage:(NSString * )imageUrl{
     NSLog(@"%s",__FUNCTION__);
     NSString * urlString = [NSString stringWithFormat:imageUrl];
+    
     NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
     
     UIImage * image = [UIImage imageWithData:data];
@@ -64,11 +65,11 @@
     if (ima) 
         NSLog(@"祝贺你！等着图片加上%@",[arr objectAtIndex:0] );
         ima.image = [arr objectAtIndex:0];
-//    for (id  obj in ima.subviews) {
-//        if ([obj isKindOfClass:[UIActivityIndicatorView class]]) {
-//            [obj removeFromSuperview];
-//        }
-//    }
+    for (id  obj in ima.subviews) {
+        if ([obj isKindOfClass:[UIActivityIndicatorView class]]) {
+            [obj removeFromSuperview];
+        }
+    }
     if (!ima) {
         NSLog(@"他奶奶的");
     }
@@ -102,10 +103,10 @@
     newsInfo.editable = NO;
    // newsInfo.backgroundColor = [UIColor clearColor];
      [newsImg setBackgroundColor:[UIColor clearColor]];
-//    UIActivityIndicatorView * avt = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 100, 24, 24)];
-//    [newsImg addSubview:avt];
-//    [avt startAnimating];
-//    [avt release];
+    UIActivityIndicatorView * avt = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 100, 24, 24)];
+    [newsImg addSubview:avt];
+    [avt startAnimating];
+    [avt release];
     titleLable.text = [arr2 objectAtIndex:0];
     
     

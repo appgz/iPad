@@ -35,10 +35,11 @@
 }
 
 -(IBAction)toMesView:(id)sender{
-    NSLog(@"%@",__FUNCTION__);
-     AGZMesViewController * toMesView = [[AGZMesViewController alloc]init];
+    NSLog(@"%s",__FUNCTION__);
+  AGZTextViewController * toMesView = [[AGZTextViewController alloc]init];
     [self.navigationController pushViewController:toMesView animated:YES];
     [toMesView release];
+ 
 }
 
 
@@ -79,7 +80,7 @@
 }
 -(void)onClickButton:( id)sender{
     
-    AGZTextViewController * mes = [[AGZTextViewController alloc]init ];
+    AGZMesViewController  * mes = [[AGZMesViewController alloc]init ];
     [self.navigationController pushViewController:mes animated:YES];
     [mes release];
    }
