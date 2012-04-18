@@ -19,6 +19,11 @@
 @synthesize  newsImg,newsInfo2;
 @synthesize newsInfo,newsImg2;
 //@synthesize dic;
+
+
+
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -75,13 +80,13 @@
     }
     
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+
     [self getDate];
- //   [self getImage];
-//    NSLog(@"%@",[dic)
+
     
     NSArray * arr = [dic valueForKey:@"newsInfo"];
     NSArray * arr2 = [dic valueForKey:@"newsTitle"];

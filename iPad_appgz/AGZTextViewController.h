@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AGZHomeViewController.h"
+
 @interface AGZTextViewController : UIViewController{
     UILabel * titleLable;
     UIImageView * newsImg;

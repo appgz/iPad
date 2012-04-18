@@ -5,12 +5,12 @@
 //  Created by appgz on 12-3-28.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-
+#define LOADIMAGE(file,ext)[UIImage imageWithContentsOfFile:[NSbundle mainBundle]pathForResource:file oftype: ext]] 
 #import "AGZHomeViewController.h"
-
-
 #import "AGZAbove.h"
 #import "AGZTextViewController.h"
+
+#import "AGZRootViewController.h"
 
 
 @interface AGZHomeViewController ()
@@ -18,13 +18,13 @@
 @end
 
 @implementation AGZHomeViewController
-//@synthesize home;
+@synthesize backgroundImage;
 @synthesize topImage;
 @synthesize  logo;
 @synthesize addButton,detailButton;
 @synthesize scrollView;
 @synthesize nav;
-
+@synthesize root;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -36,10 +36,11 @@
 
 -(IBAction)toMesView:(id)sender{
     NSLog(@"%s",__FUNCTION__);
-  AGZTextViewController * toMesView = [[AGZTextViewController alloc]init];
-    [self.navigationController pushViewController:toMesView animated:YES];
-    [toMesView release];
- 
+    root = [[AGZRootViewController alloc]init ];
+    [self.navigationController pushViewController:root animated:YES];
+    [root release];
+    
+    
 }
 
 
@@ -67,22 +68,28 @@
     
         
      if (addButton.frame.origin.x + 252 >=768) {
-        
-    
-    
         addButton.frame = CGRectMake(12 , addButton.frame.origin.y + 252, 240, 240);
     }else {
         addButton.frame = CGRectMake(addButton.frame.origin.x + 252, addButton.frame.origin.y, 240, 240);
     }
+    
+//    NSArray * ar = [NSArray arrayWithObjects:addButton ,nil];
+//    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+//    [userDefault setObject:ar forKey:@"bu" ];
+//    
+//    //NSLog([userDefault objectForKey:@"bu"]);
+//    NSLog(@"%@KKKKKKKK",[ar objectAtIndex: 0]);
     [scrollView addSubview:but];
 [UIView commitAnimations];
     
 }
+
 -(void)onClickButton:( id)sender{
     
-    AGZMesViewController  * mes = [[AGZMesViewController alloc]init ];
-    [self.navigationController pushViewController:mes animated:YES];
-    [mes release];
+    AGZTextViewController * toMesView = [[AGZTextViewController alloc]init];
+    [self.navigationController pushViewController:toMesView animated:YES];
+    [toMesView release];
+
    }
 -(IBAction)addView:(id)sender{
  
@@ -157,6 +164,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = NO;
+    [self.scrollView setBackgroundColor:[UIColor clearColor]];
+    [self.backgroundImage setImage:[UIImage imageNamed:@"769x1024"]];
     
     UIButton * button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     button.frame = CGRectMake(30, 39, 40, 40);
