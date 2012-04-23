@@ -18,9 +18,9 @@
 @end
 
 @implementation AGZHomeViewController
-@synthesize backgroundImage;
+
 @synthesize topImage;
-@synthesize  logo;
+@synthesize  logo,list;
 @synthesize addButton,detailButton;
 @synthesize scrollView;
 @synthesize nav;
@@ -30,6 +30,13 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        if(  [userDefault boolForKey:@"NCUserDefaultBoolForRegister"]==YES){
+      NSLog(@"%@",  [userDefault objectForKey:@"a" ]);
+            NSLog(@"你妹的");
+        }
+        
+        [self moveAddButton:nil addName:nil];
+    
     }
     return self;
 }
@@ -56,7 +63,7 @@
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(<#selector#>)];
 //    [view addGestureRecognizer:tap];
     
-    [but setBackgroundColor:[UIColor redColor]];
+    [but setImage:[UIImage imageNamed:@"239x239-2.png"] forState:UIControlStateNormal] ;
     [but setTitle:addname forState:UIControlStateNormal];
     [but setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [but setFrame:CGRectMake(addButton.frame.origin.x, addButton.frame.origin.y, 240, 240)];
@@ -76,11 +83,16 @@
 //    NSArray * ar = [NSArray arrayWithObjects:addButton ,nil];
 //    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 //    [userDefault setObject:ar forKey:@"bu" ];
-//    
-//    //NSLog([userDefault objectForKey:@"bu"]);
-//    NSLog(@"%@KKKKKKKK",[ar objectAtIndex: 0]);
+
     [scrollView addSubview:but];
-[UIView commitAnimations];
+    [UIView commitAnimations];
+    userDefault = [NSUserDefaults standardUserDefaults];
+    
+    NSArray * a = [NSArray arrayWithObjects:@"516",@"12",@"240",@"240", nil];
+    
+  //  CGPoint  p =CGPointMake(addButton.center.x, addButton.center.y);
+   [userDefault setBool:YES forKey:@"NCUserDefaultBoolForRegister"];
+    [userDefault setObject:a  forKey:@"a"]; //forKey:@"buttonadded"];
     
 }
 
@@ -166,7 +178,9 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
     [self.scrollView setBackgroundColor:[UIColor clearColor]];
-    [self.backgroundImage setImage:[UIImage imageNamed:@"769x1024"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
+    
+  
     
     UIButton * button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     button.frame = CGRectMake(30, 39, 40, 40);
@@ -188,19 +202,33 @@
 {
     
     if (interfaceOrientation==UIInterfaceOrientationLandscapeRight||interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
-        self.topImage.frame = CGRectMake(0, 0, 230, 768);
-        self.logo.frame = CGRectMake(20, 20, 190, 100);
-        self.scrollView.frame = CGRectMake(238, 0, 768, 768);
         
+        
+        self.topImage.frame = CGRectMake(0, 0, 230, 705);
+        self.logo.frame = CGRectMake(10, 20, 210, 57);
+                self.scrollView.frame = CGRectMake(238, 0, 768, 768);
+        
+        self.list.frame = CGRectMake(100, 90, 102, 26);
         self.nav.view.frame = CGRectMake(350, 160, 300, 435);
+        
+        self.list.image = [UIImage imageNamed:@"102x26.png"];
+        self.topImage.image = [UIImage imageNamed:@"230x705.jpg"];
+        self.logo.image = [UIImage imageNamed:@"210x57.png"];
+
         
     }
     if (interfaceOrientation ==UIInterfaceOrientationPortrait||interfaceOrientation ==UIInterfaceOrientationPortraitUpsideDown) {
-        self.topImage.frame = CGRectMake(0, 0, 768, 237);
-        self.logo.frame = CGRectMake(20, 20, 228, 91);
-        self.scrollView.frame =CGRectMake(0, 252, 768, 768);
+        
+   
+        self.topImage.frame = CGRectMake(0, 0, 768, 183);
+        self.logo.frame = CGRectMake(20, 20, 379, 101);
+        self.scrollView.frame =CGRectMake(0, 183, 768, 831);
         self.nav.view.frame = CGRectMake(230, 260, 300, 435);
-      
+        self.list.frame = CGRectMake(590, 120, 136, 34);
+        
+        self.list.image = [UIImage imageNamed:@"136x34.png"];
+        self.topImage.image = [UIImage imageNamed:@"768x183.jpg"];
+        self.logo.image = [UIImage imageNamed:@"379x101.png"];
 
     }
 	return YES;

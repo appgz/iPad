@@ -34,8 +34,8 @@
     
     self.pageViewController = [[[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil]autorelease];
     self.pageViewController.delegate = self;
-    
-    AGZDataViewController * startingViewController =[ self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    NSLog(@"%@",self.storyboard.description);
+    AGZDataViewController * startingViewController =[ self.modelController viewControllerAtIndex:0 storyboard:[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil]];// instantiateViewControllerWithIdentifier:@"AGZDataViewController"]];
    
     NSArray *viewControllers = [NSArray arrayWithObjects:startingViewController, nil];
     

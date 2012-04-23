@@ -11,15 +11,15 @@
 @class AGZAbove;
 #import "AGZRootViewController.h"
 
-@interface AGZHomeViewController : UIViewController{
-    UIImageView * logo;
+@interface AGZHomeViewController : UIViewController<UIScrollViewDelegate>{
+    UIImageView * logo,*list;
  
     UIImageView * topImage;
     UIScrollView * scrollView;
     
     UIButton * addButton;
     AGZAbove * abView;
-    
+    NSUserDefaults * userDefault;
 
     }
 
@@ -27,8 +27,8 @@
 
 @property(nonatomic,assign)AGZRootViewController * root;
 @property(nonatomic,assign)UINavigationController * nav;
-@property(nonatomic,retain)IBOutlet UIImageView * backgroundImage;
-@property(nonatomic,retain)IBOutlet UIImageView * logo;
+
+@property(nonatomic,retain)IBOutlet UIImageView * logo,*list;
 @property(nonatomic,retain)IBOutlet UIImageView * topImage;
 @property(nonatomic,retain)IBOutlet UIScrollView * scrollView;
 @property(nonatomic,retain)IBOutlet UIButton * addButton;

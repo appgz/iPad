@@ -13,14 +13,14 @@
 @end
 
 @implementation AGZViewController
-@synthesize AnimatedView;
+@synthesize AnimatedView,logoImage;
 @synthesize button;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden=YES;
-    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
     [self loadImage];
     
     
@@ -33,7 +33,7 @@
 -(void)loadImage{
     
        
-    NSArray *myImages = [NSArray arrayWithObjects:
+    myImages = [NSArray arrayWithObjects:
                     
                          [UIImage imageNamed:@"1-11.jpg"],
                          [UIImage imageNamed:@"1-12.jpg"],
@@ -81,10 +81,14 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (interfaceOrientation==UIInterfaceOrientationLandscapeRight||interfaceOrientation==UIInterfaceOrientationLandscapeLeft){
+        self.logoImage.frame = CGRectMake(20, 20, 210, 57);
+        self.logoImage.image = [UIImage imageNamed:@"210x57.png"];
         self.AnimatedView.frame = CGRectMake(250, 0, 520, 768);
         self.button.frame = CGRectMake(800, 600, 180, 40);
     }
         if (interfaceOrientation==UIInterfaceOrientationPortrait||interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown)  {
+            self.logoImage.frame = CGRectMake(20, 20, 379, 101);
+            self.logoImage.image = [UIImage imageNamed:@"379x101.png"];
         self.AnimatedView.frame = CGRectMake(0, 0, 768, 1024);
             self.button.frame = CGRectMake(550, 840, 180, 40);
     }

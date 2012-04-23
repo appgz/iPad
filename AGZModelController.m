@@ -13,8 +13,8 @@
 #import "JSON.h"
 
 @interface AGZModelController ()
-@property (readonly,strong,nonatomic) NSMutableArray *pageData;
-@property (readonly,strong,nonatomic) NSDictionary * gameData;
+@property (readonly,strong,nonatomic) NSArray *pageData;
+@property (readonly,strong,nonatomic) NSArray * gameData;
 @end
 
 @implementation AGZModelController
@@ -24,12 +24,15 @@
 -(id)init{
     self = [super init];
     if (self) {
-        //_pageData = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4", nil];
-       // NSDateFormatter * dateFormatter = [[[NSDateFormatter alloc]init]autorelease];
-        //_pageData = [[dateFormatter monthSymbols]copy];
-        [self getDate];
-        _pageData = [NSMutableArray arrayWithObjects:_gameData,_gameData,_gameData, nil]; 
-        
+      //  _pageData = [[NSArray alloc]initWithObjects:_gameData,_gameData,_gameData, nil];
+        NSDateFormatter * dateFormatter = [[[NSDateFormatter alloc]init]autorelease];
+        _pageData = [[dateFormatter monthSymbols]copy];
+ /*       [self getDate];
+        _pageData = [[NSMutableArray alloc]init];
+        [_pageData addObject:_gameData ];
+        [_pageData addObject:_gameData ];
+      [ _pageData addObject: _gameData];
+     */          
     }
     return self;
 }
@@ -40,7 +43,7 @@
     NSString *jsonStr = [[NSString alloc] initWithData:response encoding:  NSUTF8StringEncoding]; 
     
     NSObject * obj = [jsonStr JSONValue];
-    _gameData = (NSDictionary *)obj;
+    _gameData = (NSArray *)obj;
     
     
 }
@@ -55,18 +58,20 @@
     }
     
     // Create a new view controller and pass suitable data.
-    AGZDataViewController *dataViewController = [[AGZDataViewController alloc]init]; //[storyboard instantiateViewControllerWithIdentifier:@"AGZDataViewController"];
+    AGZDataViewController *dataViewController =  [storyboard instantiateViewControllerWithIdentifier:@"AGZDataViewController"];//[[AGZDataViewController alloc]init];
     dataViewController.dataObject =[self.pageData objectAtIndex:index];
     
-    
+   // NSLog(@"*********%d",[self.pageData indexOfObject:dataViewController.dataObject]);
 //   [self.titleData objectAtIndex:0];
     return dataViewController;
 }
 
 -(NSUInteger)indexOfViewController:(AGZDataViewController *)viewController{
+   // NSLog(@"%@",[self.pageData indexOfObject:@"newsInfo"]);// viewController.dataObject );
+  //  NSLog(@"DDDDDDDDDD%@",self.pageData);
+  
+    return [self.pageData  indexOfObject:viewController.dataObject ];
  
-    return [self.pageData indexOfObject:viewController.dataObject ];
-   
 } 
 
 #pragma mark - Page View Controller Data Source
@@ -80,7 +85,7 @@
     }
     
     index--;
-    return [self viewControllerAtIndex:index storyboard:nil];
+    return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
@@ -95,7 +100,7 @@
     if (index == [self.pageData count]) {
         return nil;
     }
-    return [self viewControllerAtIndex:index storyboard:nil];
+    return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
 

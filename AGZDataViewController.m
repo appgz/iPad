@@ -30,7 +30,7 @@
     [_newsImg2 release];
     [super dealloc];
 }
-/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -38,39 +38,79 @@
     }
     return self;
 }
-*/
 
 
+-(void)popFrame{
+    AGZArticleView * art = [[AGZArticleView alloc]initWithFrame:CGRectMake(30, 30, 708, 944)];
+    
+    
+    
+    CATransition * animation = [CATransition animation];
+    animation.duration = 0.5f;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.fillMode = kCAFillModeForwards;
+    
+    
+    animation.type = kCATransitionMoveIn;
+    animation.subtype = kCATransitionFromTop;
+    
+   [self.view addSubview:art];
+    //[self.view removeFromSuperview];
+    [self.view.layer addAnimation:animation forKey:@"animation"];
+    
+    
+    
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.9];
+//    [UIView setAnimationCurve:UIViewAnimationOptionTransitionFlipFromLeft];
+//   
+//  //  art.frame =  CGRectMake(30, art.frame.origin.y-870, 708, 944);
+//    [self.view addSubview: art];
+//    [UIView commitAnimations];
+//    [art release];
+    
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _dataLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 60, 20)];
-    [self.view addSubview:_dataLabel];
-    
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]]; 
+    
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(popFrame)];
+//    [self.newsInfo addGestureRecognizer:tap];
+    
+   // [self.titleLabel addGestureRecognizer:tap];
+    
+    
+    
+    
     //self.view.backgroundColor = [UIColor clearColor];
     
-    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 50, 340, 90)];
-    _titleLabel2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 545, 340, 90)];
-    _newsImg = [[UIImageView alloc]initWithFrame:CGRectMake(377, 90, 370, 280)];
-    _newsImg2 = [[UIImageView alloc]initWithFrame:CGRectMake(377, 545, 370, 280)];
-    _newsInfo = [[UITextView alloc]initWithFrame:CGRectMake(20, 170, 340, 200)];
-    _newsInfo2 = [[UITextView alloc]initWithFrame:CGRectMake(20, 650, 340,200)];
+//    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 50, 340, 90)];
+//    _titleLabel2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 545, 340, 90)];
+//    _newsImg = [[UIImageView alloc]initWithFrame:CGRectMake(377, 90, 370, 280)];
+//    _newsImg2 = [[UIImageView alloc]initWithFrame:CGRectMake(377, 545, 370, 280)];
+//    _newsInfo = [[UITextView alloc]initWithFrame:CGRectMake(20, 170, 340, 200)];
+//    _newsInfo2 = [[UITextView alloc]initWithFrame:CGRectMake(20, 650, 340,200)];
+//
+//    [_newsImg setBackgroundColor:[UIColor redColor]];
+//    
+//    [_newsImg2 setBackgroundColor:[UIColor redColor]];
+//    _newsInfo.editable = NO;
+//    _newsInfo2.editable = NO;
+//    [ self.view addSubview:_titleLabel];
+//    [self.view addSubview:_titleLabel2];
+//    [self.view addSubview:_newsImg];
+//    [self.view addSubview:_newsImg2];
+//    [self.view addSubview:_newsInfo];
+//    [self.view addSubview:_newsInfo2];
 
-    [_newsImg setBackgroundColor:[UIColor redColor]];
-    
-    [_newsImg2 setBackgroundColor:[UIColor redColor]];
+/*    _newsInfo.backgroundColor = [UIColor clearColor];
+    _newsInfo2.backgroundColor = [ UIColor clearColor];
+                
     _newsInfo.editable = NO;
     _newsInfo2.editable = NO;
-    [ self.view addSubview:_titleLabel];
-    [self.view addSubview:_titleLabel2];
-    [self.view addSubview:_newsImg];
-    [self.view addSubview:_newsImg2];
-    [self.view addSubview:_newsInfo];
-    [self.view addSubview:_newsInfo2];
-
-    
     [_newsImg setBackgroundColor:[UIColor cyanColor]];
     UIActivityIndicatorView * avt = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 100, 24, 24)];
     [_newsImg addSubview:avt];
@@ -80,6 +120,7 @@
     [_newsImg2 setBackgroundColor:[UIColor cyanColor]];
     UIActivityIndicatorView * avt2 = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 100, 24, 24)];
     [_newsImg2 addSubview:avt2];
+
     [avt2 startAnimating];
     [avt2 release];
     
@@ -88,21 +129,22 @@
      arr2 = [self.dataObject valueForKey:@"newsInfo"];
    arrImg = [self.dataObject valueForKey:@"newsImg"];
   [NSThread detachNewThreadSelector:@selector(getImage:) toTarget:self withObject:[arrImg objectAtIndex:0]];
-    	// Do any additional setup after loading the view.
+   */ 	// Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"%s",__FUNCTION__);
     [super viewWillAppear:animated];
    
-   // self.dataLabel.text = [self.dataObject description];
+    self.dataLabel.text = [self.dataObject description];
     
     
    // NSLog(@"------------%@",[self.dataObject valueForKey:@"appName"]);
 
-    
-    
-    _newsInfo.text = [arr2 objectAtIndex:0];
+ /*   _newsInfo.text = [arr2 objectAtIndex:0];
+    _newsInfo2.text = [arr2 objectAtIndex:0]; 
     [_titleLabel setText:[arr objectAtIndex:0]];
+    [_titleLabel2 setText:[arr objectAtIndex:0]];
+  */
 }
 
     
@@ -136,21 +178,23 @@
     UIImage * image = [UIImage imageWithData:data];
     if (image) {
         NSArray * array = [NSArray arrayWithObject:image];
-        NSLog(@"<<<<<<<<<<<++++++%@",[array objectAtIndex:0]);
+       
         [self performSelectorOnMainThread:@selector(fillImage:) withObject:array waitUntilDone:YES];
-        NSLog(@"<<<<<<<<<<<++++++");
+    
     }
     
     
     //    NSLog(@"<<<<<<<<<<<++++++%@",data);
 }
--(void)fillImage:(NSArray * ) arr{
+-(void)fillImage:(NSArray * ) array{
     
     NSLog(@"%s",__FUNCTION__);
     UIImageView *ima =self.newsImg;
     if (ima) 
-        NSLog(@"祝贺你！等着图片加上%@",[arr objectAtIndex:0] );
-    ima.image = [arr objectAtIndex:0];
+
+    ima.image = [array objectAtIndex:0];
+    
+    _newsImg2 = [array objectAtIndex:0];
     for (id  obj in ima.subviews) {
         if ([obj isKindOfClass:[UIActivityIndicatorView class]]) {
             [obj removeFromSuperview];
