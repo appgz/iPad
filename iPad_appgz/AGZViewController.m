@@ -21,7 +21,7 @@
     [super viewDidLoad];
     if([NetWork connectedToNetWork]==YES){
         NSLog(@"网络可用");
-        NSLog(@"表酱紫");
+        NSLog(@"just text ooolllol");
     }
     self.navigationController.navigationBarHidden=YES;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
