@@ -47,7 +47,7 @@
     _gameData = (NSMutableArray *)obj;
     
     
-    NSLog(@"%@",_gameData );
+    
 }
 
 
