@@ -7,7 +7,7 @@
 //
 
 #import "AGZDataViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 @interface AGZDataViewController ()
 
 @end
@@ -18,7 +18,7 @@
 @synthesize titleLabel = _titleLabel,titleLabel2 = _titleLabel2;
 @synthesize  newsImg = _newsImg,newsImg2 = _newsImg2;
 @synthesize newsInfo = _newsInfo,newsInfo2 = _newsInfo2;
-
+@synthesize popArticleView =_popArticleView;
 -(void)dealloc{
     [_dataLabel release];
     [_dataObject release];
@@ -41,44 +41,26 @@
 
 
 -(void)popFrame{
-    AGZArticleView * art = [[AGZArticleView alloc]initWithFrame:CGRectMake(30, 30, 708, 944)];
+    NSLog(@"%s",__FUNCTION__);
+   _popArticleView = [[AGZPopArticleView alloc]init];
+                        
+    _popArticleView.view.frame =CGRectMake(30, 30, 708, 944);
+    
+    [self.view addSubview:_popArticleView.view];
     
     
-    
-    CATransition * animation = [CATransition animation];
-    animation.duration = 0.5f;
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.fillMode = kCAFillModeForwards;
-    
-    
-    animation.type = kCATransitionMoveIn;
-    animation.subtype = kCATransitionFromTop;
-    
-   [self.view addSubview:art];
-    //[self.view removeFromSuperview];
-    [self.view.layer addAnimation:animation forKey:@"animation"];
-    
-    
-    
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.9];
-//    [UIView setAnimationCurve:UIViewAnimationOptionTransitionFlipFromLeft];
-//   
-//  //  art.frame =  CGRectMake(30, art.frame.origin.y-870, 708, 944);
-//    [self.view addSubview: art];
-//    [UIView commitAnimations];
-//    [art release];
-    
+   
     
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]]; 
     
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(popFrame)];
-//    [self.newsInfo addGestureRecognizer:tap];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(popFrame)];
+    [self.newsInfo addGestureRecognizer:tap];
     
    // [self.titleLabel addGestureRecognizer:tap];
     
@@ -106,12 +88,14 @@
 //    [self.view addSubview:_newsInfo];
 //    [self.view addSubview:_newsInfo2];
 
-/*    _newsInfo.backgroundColor = [UIColor clearColor];
+    _newsInfo.backgroundColor = [UIColor clearColor];
     _newsInfo2.backgroundColor = [ UIColor clearColor];
                 
     _newsInfo.editable = NO;
     _newsInfo2.editable = NO;
     [_newsImg setBackgroundColor:[UIColor cyanColor]];
+    
+   
     UIActivityIndicatorView * avt = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 100, 24, 24)];
     [_newsImg addSubview:avt];
     [avt startAnimating];
@@ -125,7 +109,7 @@
     [avt2 release];
     
     
-     arr = [self.dataObject valueForKey:@"newsTitle"];
+ /*    arr = [self.dataObject valueForKey:@"newsTitle"];
      arr2 = [self.dataObject valueForKey:@"newsInfo"];
    arrImg = [self.dataObject valueForKey:@"newsImg"];
   [NSThread detachNewThreadSelector:@selector(getImage:) toTarget:self withObject:[arrImg objectAtIndex:0]];
@@ -133,11 +117,11 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"%s",__FUNCTION__);
+   
     [super viewWillAppear:animated];
    
     self.dataLabel.text = [self.dataObject description];
-    
-    
+       
    // NSLog(@"------------%@",[self.dataObject valueForKey:@"appName"]);
 
  /*   _newsInfo.text = [arr2 objectAtIndex:0];
@@ -153,6 +137,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"%s",__FUNCTION__);
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    if (orientation==UIInterfaceOrientationPortrait) {
+       
+    }
+    
+    
     [super viewDidAppear:animated];
 }
 
@@ -215,6 +206,27 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    
+    if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft||interfaceOrientation ==UIInterfaceOrientationLandscapeRight) {
+        
+        _titleLabel.frame = CGRectMake(20, 30, 215, 90);
+        _newsInfo.frame = CGRectMake(20, 125, 230, 200);
+        _newsImg.frame = CGRectMake(256, 60, 240, 200);
+        
+        
+        _titleLabel2.frame = CGRectMake(20, 384, 215, 90);
+        _newsInfo2.frame = CGRectMake(20, 479, 230, 200);
+        _newsImg2.frame = CGRectMake(256, 414, 240, 200);
+        //_popArticleView.view.frame = CGRectMake(30, 30, 950, 750);
+    }else {
+        _titleLabel.frame = CGRectMake(20, 50, 340, 90);
+        _titleLabel2.frame = CGRectMake(20, 580, 340, 90);
+        _newsInfo.frame = CGRectMake(20, 170, 340, 200);
+        _newsInfo2.frame = CGRectMake(20, 650, 340,200);
+        _newsImg.frame = CGRectMake(377, 90, 370, 280);
+        _newsImg2.frame = CGRectMake(377, 545, 370, 280);
+    }
+    
 	return YES;
 }
 

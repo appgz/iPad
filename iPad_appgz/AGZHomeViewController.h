@@ -17,14 +17,21 @@
     UIImageView * topImage;
     UIScrollView * scrollView;
     
-    UIButton * addButton;
+   IBOutlet UIButton * addButton;
+   IBOutlet UIButton * firstBut;
+   IBOutlet UIButton * scendBut;
+    
     AGZAbove * abView;
     NSUserDefaults * userDefault;
-
+    NSMutableArray  *butViewCenterArray;
+    NSMutableArray *imgViewCenterArray;
+    
+    int addButtonTag;
+    BOOL isShake;
     }
 
-
-
+@property(nonatomic,retain)NSMutableArray *imgViewCenterArray;
+@property(nonatomic,retain) NSMutableArray * butViewCenterArray;
 @property(nonatomic,assign)AGZRootViewController * root;
 @property(nonatomic,assign)UINavigationController * nav;
 
@@ -32,7 +39,7 @@
 @property(nonatomic,retain)IBOutlet UIImageView * topImage;
 @property(nonatomic,retain)IBOutlet UIScrollView * scrollView;
 @property(nonatomic,retain)IBOutlet UIButton * addButton;
-@property(nonatomic,retain)IBOutlet UIButton * detailButton;
+
 //@property(nonatomic,assign) AGZHomeViewController *home;
 
 -(IBAction)addView:(id)sender;

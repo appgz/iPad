@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AGZArticleView.h"
+
+#import "AGZPopArticleView.h"
 @interface AGZDataViewController : UIViewController{
 
 
@@ -17,6 +18,8 @@ UITextView * newsInfo,*newsInfo2;
     
     NSArray * arr,* arr2,* arrImg;
 }
+
+@property(nonatomic,retain) AGZPopArticleView * popArticleView;
 @property(nonatomic,retain)IBOutlet UILabel * titleLabel, *titleLabel2;
 @property(nonatomic,retain)IBOutlet UIImageView * newsImg,* newsImg2;
 

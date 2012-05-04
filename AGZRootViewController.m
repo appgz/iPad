@@ -20,6 +20,8 @@
 @synthesize pageViewController = _pageViewController;
 @synthesize modelController = _modelController;
 
+
+
 -(void)dealloc{
     [_pageViewController release];
     [super dealloc];
@@ -78,6 +80,14 @@
 	return YES;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"%s",__FUNCTION__);
+    [super viewWillAppear:animated];
+    
+    //[self pageViewController: spineLocationForInterfaceOrientation:[[UIDevice currentDevice]orientation]];
+    [self shouldAutorotateToInterfaceOrientation:[[UIDevice currentDevice] orientation]];
+    
+}
 
 
 

@@ -14,7 +14,7 @@
 
 @interface AGZModelController ()
 @property (readonly,strong,nonatomic) NSArray *pageData;
-@property (readonly,strong,nonatomic) NSArray * gameData;
+@property (readonly,strong,nonatomic) NSMutableArray * gameData;
 @end
 
 @implementation AGZModelController
@@ -27,8 +27,8 @@
       //  _pageData = [[NSArray alloc]initWithObjects:_gameData,_gameData,_gameData, nil];
         NSDateFormatter * dateFormatter = [[[NSDateFormatter alloc]init]autorelease];
         _pageData = [[dateFormatter monthSymbols]copy];
- /*       [self getDate];
-        _pageData = [[NSMutableArray alloc]init];
+       [self getDate];
+     /*    _pageData = [[NSMutableArray alloc]init];
         [_pageData addObject:_gameData ];
         [_pageData addObject:_gameData ];
       [ _pageData addObject: _gameData];
@@ -43,9 +43,11 @@
     NSString *jsonStr = [[NSString alloc] initWithData:response encoding:  NSUTF8StringEncoding]; 
     
     NSObject * obj = [jsonStr JSONValue];
-    _gameData = (NSArray *)obj;
+   
+    _gameData = (NSMutableArray *)obj;
     
     
+    NSLog(@"%@",_gameData );
 }
 
 

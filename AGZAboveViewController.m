@@ -10,6 +10,11 @@
 #import "JSON.h"
 #import "AGZAbove.h"
 #import "AGZHomeViewController.h"
+
+
+#define game_url @"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=gtype"
+#define news_url @"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=ntype"
+#define company_url @"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=companys"
 @interface AGZAboveViewController ()
 
 @end
@@ -23,58 +28,41 @@
 }
 
 -(void)setValue:(UITableViewCell * )cell{
-    NSLog(@"%@",cell.textLabel.text);
+    
     if ([cell.textLabel.text isEqualToString: @"游戏分类"]) {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=gtype"]];  
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];  
-        
-        NSString *jsonStr = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]; 
-        
-        
-        arr = [jsonStr JSONValue];
-        NSLog(@"数组里内容：%@",[arr description] );
-        
-        for (int i=0; i<[arr count]; i++) {
-        //    NSLog(@"%@",[[arr objectAtIndex:i]valueForKey:@"Name"]);
-            NSLog(@"%@",[arr valueForKey:@"Name"]);
-            
-        } 
-        [arr retain];
+        [self getValue:1];
 }
     if([cell.textLabel.text isEqualToString:@"新闻分类"]){
-        
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=ntype"]];  
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];  
-        
-        NSString *jsonStr = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]; 
-        
-        
-        arr = [jsonStr JSONValue];
-        for (int i=0; i<[arr count]; i++) {
-            NSLog(@"%@",[[arr objectAtIndex:i]valueForKey:@"Name"]);
-            
-        }
-        [arr retain ];
-    }
-    
-    
+        [self getValue:2];
+}
     if([cell.textLabel.text isEqualToString:@"厂商分类"]){
-        
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://test.appgz.com/Subscribe_json/Type_Handler.ashx?type=companys"]];  
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];  
-        
-        NSString *jsonStr = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]; 
-        
-        
-        arr = [jsonStr JSONValue];
-        for (int i=0; i<[arr count]; i++) {
-            
-            NSLog(@"%@",[[arr objectAtIndex:i]valueForKey:@"Name"]);
-            
-        }
-        [arr retain ];
-
+        [self getValue:3]; 
+}
+    
+}
+-(void)getValue:(NSInteger ) number{
+    NSString * str;
+    switch (number) {
+        case 1:
+            str  = game_url;
+            break;
+            case 2:
+            str = news_url;
+            break;
+            case 3:
+            str = company_url;
+        default:
+            break;
     }
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:str]];  
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];  
+    
+    NSString *jsonStr = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]; 
+    
+    arr = [jsonStr JSONValue];
+
+    [arr retain];
+
     
 }
 
@@ -84,7 +72,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
+  
     return [arr count] ;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -96,36 +84,21 @@
         cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier]autorelease];
     }
    
-    //[[arr objectAtIndex:indexPath.row]valueForKey:@"name"]);
-    
     // Configure the cell...
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0f];
    cell.textLabel.text = [[arr objectAtIndex:indexPath.row]valueForKey:@"Name"];
 
-    
-        //  [[arr objectAtIndex:indexPath.row]valueForKey:@"name"];
-
-//    NSLog(@"cell li %d",[arr retainCount]);
-    
-    
-      //   [cell.textLabel setText:[[arr objectAtIndex:indexPath.row]valueForKey:@"name"]];
-    //  cell.textLabel.text= [[arr objectAtIndex:indexPath] objectForKey:@"name"];
-    //[[arr objectatindex:indexPath.row]valueForKey:@"name"];
-    
-    
-    
-    
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
-  //  nav.view.hidden = YES;
-//   AGZHomeViewController * home = [[AGZHomeViewController alloc]init];
-    [self.home moveAddButton:self.navigationController addName:@"新添加的名称"];
-    //home.nav.view.hidden = YES;
-    NSLog(@"wwwwwwwwwwwwwwww");
-//    [home release];
+    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"在这里呢%@",[tableView cellForRowAtIndexPath:indexPath] );
+    [self.home moveAddButton:self.navigationController addName:nil];
+
+   
+
 }
 
 

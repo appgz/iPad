@@ -7,7 +7,7 @@
 //
 
 #import "AGZViewController.h"
-
+#import "NetWork.h"
 @interface AGZViewController ()
 
 @end
@@ -19,6 +19,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if([NetWork connectedToNetWork]==YES){
+        NSLog(@"网络可用");
+    }
     self.navigationController.navigationBarHidden=YES;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
     [self loadImage];
@@ -42,12 +45,12 @@
                          [UIImage imageNamed:@"1-15.jpg"],
                          nil];
     
-  //  UIImageView *AnimatedView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 768, 1024)];
+ 
      AnimatedView.animationImages = myImages;
     AnimatedView.animationDuration = 20; // seconds
     AnimatedView.animationRepeatCount = 0; // 0 代表一直循环。
     [AnimatedView startAnimating];
- //   [self.view addSubview:AnimatedView];
+ 
     
     [AnimatedView release];
 }
@@ -57,14 +60,8 @@
     
     AGZHomeViewController * homeView = [[AGZHomeViewController alloc]initWithNibName:@"AGZHomeViewController" bundle:nil];
     [self.navigationController pushViewController:homeView animated:YES];
-    
- 
     [homeView release];
   
-    
-    
-    
-    
 }
 
 
@@ -75,7 +72,13 @@
   
     // Release any retained subviews of the main view.
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"%s",__FUNCTION__);
+    [super viewWillAppear:animated];
+    
+    [self shouldAutorotateToInterfaceOrientation:[[UIDevice currentDevice] orientation]];
+    
+}
 
 //旋转屏幕
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

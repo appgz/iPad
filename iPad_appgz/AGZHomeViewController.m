@@ -9,9 +9,10 @@
 #import "AGZHomeViewController.h"
 #import "AGZAbove.h"
 #import "AGZTextViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 #import "AGZRootViewController.h"
-
+static const CGFloat kWobbleRadians = 1.5;
+static const NSTimeInterval kWobbleTime = 0.07;
 
 @interface AGZHomeViewController ()
 
@@ -19,9 +20,10 @@
 
 @implementation AGZHomeViewController
 
+@synthesize butViewCenterArray,imgViewCenterArray;
 @synthesize topImage;
 @synthesize  logo,list;
-@synthesize addButton,detailButton;
+@synthesize addButton;
 @synthesize scrollView;
 @synthesize nav;
 @synthesize root;
@@ -30,50 +32,57 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        if(  [userDefault boolForKey:@"NCUserDefaultBoolForRegister"]==YES){
-      NSLog(@"%@",  [userDefault objectForKey:@"a" ]);
-            NSLog(@"你妹的");
-        }
-        
-        [self moveAddButton:nil addName:nil];
-    
-    }
+           }
     return self;
+}
+
+-(void)dealloc{
+    [butViewCenterArray release];
+    [imgViewCenterArray release];
+    [scrollView release];
+    [super dealloc];
 }
 
 -(IBAction)toMesView:(id)sender{
     NSLog(@"%s",__FUNCTION__);
+    if (isShake ==NO) {
+        
+    
     root = [[AGZRootViewController alloc]init ];
     [self.navigationController pushViewController:root animated:YES];
     [root release];
-    
+    }
     
 }
-
+-(void)text:(UIButton *)sender{
+    NSLog(@"这个but的tag是：%d",sender.tag);
+}
 
 -(void)moveAddButton:(UIViewController * )sender addName:(NSString *)addname {
     
-    
+   
+    NSLog(@"%s",__FUNCTION__);
+    UIButton * but = [UIButton buttonWithType:UIBarStyleDefault];
     sender.view.hidden = YES;
-    
-    
-    UIButton * but = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-//    UIView *view;
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(<#selector#>)];
-//    [view addGestureRecognizer:tap];
-    
-    [but setImage:[UIImage imageNamed:@"239x239-2.png"] forState:UIControlStateNormal] ;
-    [but setTitle:addname forState:UIControlStateNormal];
-    [but setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+   
+    [but  setTag:addButtonTag];
+    but.imageView.tag = but.tag;
+
+    addButtonTag++;
+
+    [but setBackgroundImage:[UIImage imageNamed:@"239x239-2.png"] forState:UIControlStateNormal];
+    //[but setImage:[UIImage imageNamed:@"239x239-2.png"] forState:UIControlStateNormal] ;
+    // [but setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [but setFrame:CGRectMake(addButton.frame.origin.x, addButton.frame.origin.y, 240, 240)];
+   
+    NSValue *butValue = [NSValue valueWithCGPoint:but.center];
+ 
+    [but addTarget:self action:@selector(toMesView:) forControlEvents:UIControlEventTouchUpInside];   
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationTransition:UIUserInterfaceLayoutDirectionRightToLeft forView:but.imageView cache:YES];
     [UIView setAnimationDuration:1.0];
-     
-    
-        
+
      if (addButton.frame.origin.x + 252 >=768) {
         addButton.frame = CGRectMake(12 , addButton.frame.origin.y + 252, 240, 240);
     }else {
@@ -84,55 +93,285 @@
 //    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 //    [userDefault setObject:ar forKey:@"bu" ];
 
+
+    NSValue *addButtonValue = [NSValue valueWithCGPoint:addButton.center];
+   
+    if ([butViewCenterArray count]<2) {
+     [butViewCenterArray addObject:butValue];
+    [butViewCenterArray addObject:addButtonValue];
+    }else {
+        [butViewCenterArray removeObjectAtIndex:[butViewCenterArray count]-1];
+        [butViewCenterArray addObject:butValue];
+        [butViewCenterArray addObject:addButtonValue];
+    }
+    
+    
+    NSLog(@"%d*******%d",[butViewCenterArray count],[butViewCenterArray indexOfObject:addButtonValue]);
+    //给but添加长按手势
+    UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
+    longPressRecognizer.allowableMovement = 30;
+    [but addGestureRecognizer:longPressRecognizer];
+    [longPressRecognizer release];
+       
+ 
     [scrollView addSubview:but];
     [UIView commitAnimations];
-    userDefault = [NSUserDefaults standardUserDefaults];
+               /*    userDefault = [NSUserDefaults standardUserDefaults];
     
     NSArray * a = [NSArray arrayWithObjects:@"516",@"12",@"240",@"240", nil];
     
   //  CGPoint  p =CGPointMake(addButton.center.x, addButton.center.y);
    [userDefault setBool:YES forKey:@"NCUserDefaultBoolForRegister"];
     [userDefault setObject:a  forKey:@"a"]; //forKey:@"buttonadded"];
+ */ 
     
 }
 
--(void)onClickButton:( id)sender{
+
+
+-(void)handleLongPress:(UILongPressGestureRecognizer*)longPressRecognizer{
+    NSLog(@"%s",__FUNCTION__);
+    if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
+        if (isShake ==NO) {
+            
+        
+    [self addDeleteView];
+    
+   
+    UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(stopShake)];
+    [self.navigationItem setRightBarButtonItem:doneButtonItem];
+    
+    
+    
+    [doneButtonItem release];
+    isShake = YES;
+     [self shakeView];
+        }
+    }
+}
+
+-(void)addDeleteView{
+    UIImageView *deleteImg = nil;
+//UIButton *deleteButton = nil;
+
+    
+    for (UIView *tempView in scrollView.subviews) {
+        NSLog(@"tempView的tag值%d",tempView.tag);
+       
+        
+        
+        if (tempView.tag !=999) {
+            if ([tempView isKindOfClass:[UIButton class]]) {
+            
+        NSLog(@"tag值%d",tempView.tag);
+            deleteImg =[ [UIImageView alloc]initWithFrame:CGRectMake(tempView.frame.origin.x-25,tempView.frame.origin.y - 25,50, 50)];
+            [deleteImg setImage:[UIImage imageNamed:@"close.png"]];
+                
+            deleteImg.tag = tempView.tag;
+                NSLog(@"图片的tag值：%d",deleteImg.tag);
+            [scrollView addSubview:deleteImg];
+            deleteImg.userInteractionEnabled = YES;
+            
+            UITapGestureRecognizer * tap = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deletea:)]autorelease];
+            [deleteImg addGestureRecognizer:tap];
+            
+            
+            NSValue *tempValue2 = [NSValue valueWithCGPoint:deleteImg.center];
+            [imgViewCenterArray addObject:tempValue2];
+               
+            [deleteImg release];
+            
+            }
+        
+        }
+        NSLog(@"图片数组个数%d",[imgViewCenterArray count] );
+    }
+  
+    
+}
+
+-(void)deletea:(UITapGestureRecognizer *)sender{
+   // if (sender.state == UIGestureRecognizerStateBegan||sender.state ==UIGestureRecognizerStateEnded){
+    
+    
+    NSLog(@"%s",__FUNCTION__);
+    	
+  
+
+	NSMutableArray *tempButViewArray = [NSMutableArray arrayWithArray:butViewCenterArray];
+	NSMutableArray *tempImgViewArray = [NSMutableArray arrayWithArray:imgViewCenterArray];
+    
+   NSLog(@"but数组个数%d img数组个数%d",[tempButViewArray count],[tempImgViewArray count]);
+    NSLog(@"图片数组里的内容%@",tempImgViewArray);
+     
+	[UIView beginAnimations:@"movement" context:nil];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+	[UIView setAnimationDuration:1.0f];
+	
+	UIView *tempView = nil;
+    
+    //删除but and img；
+	do {
+        tempView = [scrollView viewWithTag:[sender.view tag]];
+        [tempView removeFromSuperview];
+	} while (tempView);
+	
+	CGPoint tempViewCenter;
+	int butViewIndex = 0;
+	int imgViewIndex = 0;
+	for (tempView in [scrollView subviews]) {
+        
+        if (tempView.tag !=999) {
+             
+                
+             
+        
+		if ([tempView isKindOfClass:[UIButton class]]) {
+           
+         //   NSLog(@"按钮的tag%d",tempView.tag);
+			tempViewCenter = [[tempButViewArray objectAtIndex:butViewIndex] CGPointValue];
+         //   NSLog(@"按钮tempViewCenter是%@",[tempButViewArray objectAtIndex:butViewIndex]);
+            butViewIndex ++;
+            
+            
+		} else if ([tempView isKindOfClass:[UIImageView class]]) {
+          //NSLog(@"这是什么东西%d",imgViewIndex);
+          //  tempView = [scrollView viewWithTag:0];
+        // NSLog(@"%@",tempView );
+          //  NSLog(@"图片的tag值：%d ",tempView.tag);
+            
+			tempViewCenter = [[tempImgViewArray objectAtIndex:imgViewIndex] CGPointValue];
+          //   NSLog(@"图片tempViewCenter是%@",[tempImgViewArray objectAtIndex:imgViewIndex]);
+            if (imgViewIndex<[tempImgViewArray count]) {
+               imgViewIndex ++;
+                
+            }
+			
+         
+		}
+		tempView.center = tempViewCenter;
+        }  
+        if (imgViewIndex==[tempImgViewArray count]) {
+            
+             NSLog(@"nimei");
+            break;
+           
+        }
+	}
+	[UIView commitAnimations];
+   // }
+}
+
+
+- (void)shakeView {
+    
+    static BOOL wobblesLeft = NO;
+	
+	if (isShake) {
+		CGFloat rotation = (kWobbleRadians * M_PI) / 180.0;
+		CGAffineTransform wobbleLeft = CGAffineTransformMakeRotation(rotation);
+		CGAffineTransform wobbleRight = CGAffineTransformMakeRotation(-rotation);
+		
+		[UIView beginAnimations:nil context:nil];
+		
+		NSInteger i = 0;
+		NSInteger nWobblyButtons = 0;  
+        
+        for (UIView *tempView in [scrollView subviews]) {
+			if ([tempView isKindOfClass:[UIButton class]]) {
+				++nWobblyButtons;
+				if (i % 2) {
+					tempView.transform = wobblesLeft ? wobbleRight : wobbleLeft;
+				} else {
+					tempView.transform = wobblesLeft ? wobbleLeft : wobbleRight;
+				}
+				++i;
+			}
+            if ([tempView isKindOfClass:[UIImageView class]]) {
+				++nWobblyButtons;
+				if (i % 2) {
+					tempView.transform = wobblesLeft ? wobbleRight : wobbleLeft;
+				} else {
+					tempView.transform = wobblesLeft ? wobbleLeft : wobbleRight;
+				}
+				++i;
+			}
+
+          
+		}
+		
+		if (nWobblyButtons >= 1) {
+			[UIView setAnimationDuration:kWobbleTime];
+			[UIView setAnimationDelegate:self];
+			[UIView setAnimationDidStopSelector:@selector(shakeView)];
+			wobblesLeft = !wobblesLeft;
+			
+		} else {
+			[NSObject cancelPreviousPerformRequestsWithTarget:self];
+			[self performSelector:@selector(shakeView) withObject:nil afterDelay:kWobbleTime];
+		}
+		
+		[UIView commitAnimations];
+    }
+}
+
+- (void)stopShake {
+	isShake = NO;
+	
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.3f];
+    //	[UIView setAnimationDelegate:self];
+	
+	for (UIView *tempView in [scrollView subviews]) {
+		tempView.transform = CGAffineTransformIdentity;
+	}
+	[UIView commitAnimations];
+	
+	for (UIView *tempView in [scrollView subviews]) {
+		if ([tempView isKindOfClass:[UIImageView class]]) {
+			[tempView removeFromSuperview];
+
+		}
+  
+	}
+ 
+    
+    self.navigationItem.rightBarButtonItem=nil;
+}
+
+
+-(void)onClickButton:( id )sender{
     
     AGZTextViewController * toMesView = [[AGZTextViewController alloc]init];
     [self.navigationController pushViewController:toMesView animated:YES];
     [toMesView release];
 
    }
--(IBAction)addView:(id)sender{
- 
- 
-    
-    UIViewController *viewController = [[UIViewController alloc]init];
-    
-    if (abView==nil) {
-        
-    
-    abView = [[AGZAbove alloc]initWithFrame:CGRectMake(230, 260, 300, 435)];
-    abView.home = self;
-    
-    abView.agzController = viewController;
-   
-    viewController.view = abView;
-    
-//   self.aGZHomeViewController =abView.aGZAboveController;
-    
-    
-    [abView release];
-    
-    nav = [[UINavigationController alloc]initWithRootViewController:viewController];
-        
-    nav.view.frame = CGRectMake(260, 260, 300, 435);
-    }else {
-        self.nav.view.hidden= NO;
+-(IBAction)addView:(UIButton *)sender{
+    NSLog(@"%s",__FUNCTION__);
+    if (sender.center.x ==636&&sender.center.y ==636) {
+        NSLog(@"你妹的");
+        return;
     }
-    
-    
-    
+        if (isShake ==NO ) {
+                              UIViewController *viewController = [[UIViewController alloc]init];
+        
+        if (abView==nil) {
+        abView = [[AGZAbove alloc]initWithFrame:CGRectMake(230, 260, 300, 435)];
+        abView.home = self;
+        abView.agzController = viewController;
+        viewController.view = abView;
+        
+    //   self.aGZHomeViewController =abView.aGZAboveController;
+        
+        [abView release];
+        nav = [[UINavigationController alloc]initWithRootViewController:viewController];
+        nav.view.frame = CGRectMake(260, 260, 300, 435);
+        }else {
+            self.nav.view.hidden= NO;
+        }
+        
+
  /*   UIButton * but = [UIButton buttonWithType:UIButtonTypeCustom];
     [but setBackgroundColor:[UIColor redColor]];
     but.frame = CGRectMake(180, 5, 40, 30);
@@ -170,22 +409,57 @@
 //    [UIView setAnimationDuration:3.0];
     //    [self.view addSubview:abView];
  //   [UIView commitAnimations];
-        
+    }    
 }
-
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    addButtonTag = 1;
     self.navigationController.navigationBarHidden = NO;
-    [self.scrollView setBackgroundColor:[UIColor clearColor]];
+  
+    [scrollView setBackgroundColor:[UIColor clearColor]];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
+    [firstBut.imageView setTag:999];
+    [scendBut.imageView setTag:999];
+    NSLog(@"%d%d",firstBut.imageView.tag,scendBut.imageView.tag);
+    
+    butViewCenterArray = [[NSMutableArray alloc]init ];
+    imgViewCenterArray = [[NSMutableArray alloc]init];
+    
     
   
+   
+ /*   for (UIView *tempView in scrollView.subviews) {
+        if ([tempView isKindOfClass:[UIButton class]]) {
+            
+            
+            NSValue *butValue = [NSValue valueWithCGPoint:tempView.center];
+            
+            [butViewCenterArray addObject:butValue];
+            
+            [butValue release];
+            
+        }
+        
+    }  
+    NSLog(@"数组在这呢。来拿啊%@\n",butViewCenterArray);
+  */  
+    
     
     UIButton * button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     button.frame = CGRectMake(30, 39, 40, 40);
    // [button addTarget:nil  action:@selector(toMesView:) forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:nil action:@selector(onClickButton:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTag:88];
+    
+   
+    
+
+    
     [self.view addSubview:button];
     
     // Do any additional setup after loading the view from its nib.
@@ -193,9 +467,42 @@
 
 - (void)viewDidUnload
 {
+    
     [super viewDidUnload];
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"%s",__FUNCTION__);
+    [super viewWillAppear:animated];
+  
+    [self shouldAutorotateToInterfaceOrientation:[[UIDevice currentDevice] orientation]];
+    
+}
+-(void)viewDidAppear:(BOOL)animated{
+    NSLog(@"%s",__FUNCTION__);  
+    [super viewDidAppear:animated];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+      NSLog(@"%s",__FUNCTION__);
+    [super viewWillDisappear:animated];
+//    NSArray * ar = [NSArray arrayWithObjects: addButton, nil];
+//     userDefault = [NSUserDefaults standardUserDefaults];
+//    [userDefault setObject:ar forKey:@"but"];
+//    [userDefault synchronize];
+    
+}
+-(void)viewDidDisappear:(BOOL)animated{
+      NSLog(@"%s",__FUNCTION__);
+    [super viewDidDisappear:animated];
+    
+}
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        NSLog(@"%s",__FUNCTION__);
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
