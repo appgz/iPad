@@ -21,24 +21,17 @@
     [super viewDidLoad];
     if([NetWork connectedToNetWork]==YES){
         NSLog(@"网络可用");
-        NSLog(@"just text ooolllol");
     }
     self.navigationController.navigationBarHidden=YES;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"769x1024.png"]];
     [self loadImage];
-    
-    
 
-    
-    
            	// Do any additional setup after loading the view, typically from a nib.
 }
 //图片幻灯片
 -(void)loadImage{
-    
-       
+
     myImages = [NSArray arrayWithObjects:
-                    
                          [UIImage imageNamed:@"1-11.jpg"],
                          [UIImage imageNamed:@"1-12.jpg"],
                          [UIImage imageNamed:@"1-13.jpg"],
@@ -64,19 +57,15 @@
     [homeView release];
   
 }
-
-
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    
-  
+
     // Release any retained subviews of the main view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"%s",__FUNCTION__);
     [super viewWillAppear:animated];
-    
     [self shouldAutorotateToInterfaceOrientation:[[UIDevice currentDevice] orientation]];
     
 }

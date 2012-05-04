@@ -16,6 +16,7 @@
 }
 @property (nonatomic,retain)IBOutlet UIButton * button;
 @property (nonatomic,retain)IBOutlet UIImageView * AnimatedView,*logoImage;
+
 -(IBAction)toHomeView:(id)sender;
 
 @end

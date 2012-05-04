@@ -237,6 +237,9 @@
 		4F87B66B153E5DE7006AB6B5 /* 作废 */ = {
 			isa = PBXGroup;
 			children = (
+				4FD856E7152FE6D1001E330E /* AGZTextViewController.h */,
+				4FD856E8152FE6D1001E330E /* AGZTextViewController.m */,
+				4FD856E9152FE6D2001E330E /* AGZTextViewController.xib */,
 				4FCD7D361532D00C0085865E /* AGZViewToImage.h */,
 				4FCD7D371532D00C0085865E /* AGZViewToImage.m */,
 				4FE111D7152ED55900C29533 /* Leaves */,
@@ -298,11 +301,6 @@
 				4F990C6F1522BC2E0015E84C /* AGZHomeViewController.h */,
 				4F990C701522BC2E0015E84C /* AGZHomeViewController.m */,
 				4F8F1E1B1526E6A900802F2C /* AGZHomeViewController.xib */,
-				4FD856E7152FE6D1001E330E /* AGZTextViewController.h */,
-				4FD856E8152FE6D1001E330E /* AGZTextViewController.m */,
-				4FD856E9152FE6D2001E330E /* AGZTextViewController.xib */,
-				4F990CAE1522F2BE0015E84C /* Utilities.h */,
-				4F990CAF1522F2BE0015E84C /* Utilities.m */,
 				4FDEF525151DB74900683809 /* Supporting Files */,
 			);
 			path = iPad_appgz;
@@ -315,6 +313,8 @@
 				4FDEF527151DB74900683809 /* InfoPlist.strings */,
 				4FDEF52A151DB74900683809 /* main.m */,
 				4FDEF52C151DB74900683809 /* iPad_appgz-Prefix.pch */,
+				4F990CAE1522F2BE0015E84C /* Utilities.h */,
+				4F990CAF1522F2BE0015E84C /* Utilities.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

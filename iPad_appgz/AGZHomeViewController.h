@@ -12,14 +12,14 @@
 #import "AGZRootViewController.h"
 
 @interface AGZHomeViewController : UIViewController<UIScrollViewDelegate>{
+    
     UIImageView * logo,*list;
- 
     UIImageView * topImage;
     UIScrollView * scrollView;
     
-   IBOutlet UIButton * addButton;
-   IBOutlet UIButton * firstBut;
-   IBOutlet UIButton * scendBut;
+    IBOutlet UIButton * addButton;
+    IBOutlet UIButton * firstBut;
+    IBOutlet UIButton * scendBut;
     
     AGZAbove * abView;
     NSUserDefaults * userDefault;
@@ -27,6 +27,8 @@
     NSMutableArray *imgViewCenterArray;
     
     int addButtonTag;
+    
+    int addButBack;
     BOOL isShake;
     }
 
@@ -44,8 +46,6 @@
 
 -(IBAction)addView:(id)sender;
 -(IBAction)toMesView:(id)sender;
-
 -(void)moveAddButton:(id)sender addName:(NSString *)addname ;
-
 -(void) onClickButton:(id)sender;
 @end
